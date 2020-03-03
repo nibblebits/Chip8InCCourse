@@ -115,13 +115,13 @@ int main(int argc, char **argv)
         SDL_RenderPresent(renderer);
         if (chip8.registers.delay_timer > 0)
         {
-            Sleep(100);
+            Sleep(1);
             chip8.registers.delay_timer -=1;
         }
 
         if (chip8.registers.sound_timer > 0)
         {
-            Beep(15000, 100 * chip8.registers.sound_timer);
+            Beep(15000, 10 * chip8.registers.sound_timer);
             chip8.registers.sound_timer = 0;
         }
         
