@@ -1,5 +1,5 @@
 # Chip8InCCourse
-This repository has been created for the Chip8 in C programming course which can be found here: https://forclowns.com/course/creating-an-emulator-in-c
+This repository has been created for the Chip8 in C programming course which can be found here: https://dragonzap.com/course/creating-an-emulator-in-c
 Follow the guide and learn how to make this from the ground up
 
 # Course Description
