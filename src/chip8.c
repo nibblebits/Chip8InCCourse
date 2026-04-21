@@ -102,7 +102,7 @@ static void chip8_exec_extended_eight(struct chip8* chip8, unsigned short opcode
 
         // 8xyE - SHL Vx {, Vy}
         case 0x0E:
-            chip8->registers.V[0x0f] = chip8->registers.V[x] & 0b10000000;
+            chip8->registers.V[0x0f] = (chip8->registers.V[x] & 0b10000000) >> 7;
             chip8->registers.V[x] = chip8->registers.V[x] * 2;
         break;
     }
@@ -217,6 +217,8 @@ static void chip8_exec_extended(struct chip8* chip8, unsigned short opcode)
 
         // CALL addr, 2nnn Call subroutine at location nnn
         case 0x2000:
+            // main.c advances PC before chip8_exec(), so PC already points at
+            // the next instruction here. That is the address CALL should save.
             chip8_stack_push(chip8, chip8->registers.PC);
             chip8->registers.PC = nnn;
         break;
@@ -280,7 +282,7 @@ static void chip8_exec_extended(struct chip8* chip8, unsigned short opcode)
         // Cxkk - RND Vx, byte
         case 0xC000:
             srand(clock());
-            chip8->registers.V[x] = (rand() % 255) & kk;
+            chip8->registers.V[x] = (rand() % 256) & kk;
         break;
 
         // Dxyn - DRW Vx, Vy, nibble. Draws sprite to the screen
@@ -333,6 +335,7 @@ void chip8_exec(struct chip8* chip8, unsigned short opcode)
 
         // Ret: Return from subroutine
         case 0x00EE:
+            // RET restores the "next instruction" address that CALL saved.
             chip8->registers.PC = chip8_stack_pop(chip8);
         break;
 
